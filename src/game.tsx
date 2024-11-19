@@ -27,11 +27,12 @@ export default function Game({ myNum, reset }: GameProps) {
     return () => clearInterval(countdownInterval);
   }, [seconds]);
 
-  function correctProblems(e) {
+  function correctProblems(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     let tempScore = 0;
     const tempRightWrongList = [];
     for (let i = 0; i < mathList.length; i++) {
+      // @ts-expect-error need to fix types here
       if (parseInt(e.target[i].value) === mathList[i] * myNum) {
         tempScore += 1;
         tempRightWrongList.push(true);
