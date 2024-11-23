@@ -14,6 +14,10 @@ Add in support for division as well. Will mostly take the same structure as mult
 
 ## General Game
 
+### Mobile
+
+Start handling mobile a bit better. Just look at it at least. 
+
 ### Linear vs Shuffle
 
 Implement linear mode. Which will score you fewer points. But you also have a little less time. 
