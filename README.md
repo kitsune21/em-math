@@ -14,6 +14,10 @@ Add in support for division as well. Will mostly take the same structure as mult
 
 ## General Game
 
+### Linear vs Shuffle
+
+Implement linear mode. Which will score you fewer points. But you also have a little less time. 
+
 ### Progress
 
 I'm too lazy and it costs to much (aka anything above $0) to host a server and a db to do it the right way. So just save and restore progress from localStorage.
