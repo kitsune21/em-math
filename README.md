@@ -2,7 +2,7 @@
 
 This is a fun little project I started in about an hour one night after working with my foster son who really struggles with math. I wanted to create a fun gamified way to practice and "pass off" different times tables.
 
-[Link to Check it out](https://math.cecil-thomas.com)
+[Link - Em Math](https://math.cecil-thomas.com)
 
 # Roadmap
 
