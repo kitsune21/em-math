@@ -1,50 +1,39 @@
-# React + TypeScript + Vite
+# Em - Math
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a fun little project I started in about an hour one night after working with my foster son who really struggles with math. I wanted to create a fun gamified way to practice and "pass off" different times tables.
 
-Currently, two official plugins are available:
+[Link to Check it out(https://math.cecil-thomas.com)]
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# Roadmap
 
-## Expanding the ESLint configuration
+Where to take this project in the future:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Division
 
-- Configure the top-level `parserOptions` property like this:
+Add in support for division as well. Will mostly take the same structure as multiplication, but will need to be adjusted.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## General Game
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### Progress
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+I'm too lazy and it costs to much (aka anything above $0) to host a server and a db to do it the right way. So just save and restore progress from localStorage.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+### Pass Offs
+
+Show the user which levels they have passed off. Maybe little colored squares inside the buttons, one for each.
+
+### High Scores
+
+Implementing a more robust scoring system. So not just how many they got right on submission, but also include how fast they finished all of the problems, what the difficulty was, time between answers, etc.
+
+### Insanity Mode
+
+A new even more crazy difficulty that has less time and more numbers.
+
+## Other Thoughts
+
+Probably want to add other games for addition, and subtraction.
+
+Fractions and decimals.
+
+Up the number of animations, and fun. This is a game for kids.
