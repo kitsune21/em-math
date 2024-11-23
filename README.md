@@ -37,3 +37,7 @@ Probably want to add other games for addition, and subtraction.
 Fractions and decimals.
 
 Up the number of animations, and fun. This is a game for kids.
+
+Full Random Mode. Can be any number by any number.
+
+Next table button. Quick and easy way to just go to the next times table.
