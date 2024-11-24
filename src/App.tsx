@@ -1,20 +1,28 @@
 import { useState } from "react";
-import PracticeButton from "./comps/practiceButton";
+import {
+  PracticeButton,
+  OptionButtonLeft,
+  OptionButtonCenter,
+  OptionButtonRight,
+} from "./comps";
 import Game from "./game";
 
 function App() {
   const easy = "easy";
   const med = "med";
   const hard = "hard";
+  const insanity = "insanity";
   const [selectedGame, setSelectedGame] = useState(0);
-  const [difficulty, setDifficulty] = useState<"easy" | "med" | "hard">(med);
+  const [difficulty, setDifficulty] = useState<
+    "easy" | "med" | "hard" | "insanity"
+  >(med);
   const [isRandom, setIsRandom] = useState(false);
 
   function reset() {
     setSelectedGame(0);
   }
 
-  function handleDifficulty(level: "easy" | "med" | "hard") {
+  function handleDifficulty(level: "easy" | "med" | "hard" | "insanity") {
     setDifficulty(level);
   }
 
@@ -33,43 +41,38 @@ function App() {
             Pick which times tables you would like to practice:
           </h2>
           <div className="flex justify-center py-4">
-            <button
-              data-type={isRandom}
-              className="border-2 border-r-0 border-black rounded-l-xl bg-gray-200 hover:bg-gray-300 hover:underline p-2 transition-all duration-200 data-[type=false]:bg-sky-400"
+            <OptionButtonLeft
+              condition={!isRandom}
               onClick={() => handleGameType(false)}
-            >
-              Straight
-            </button>
-            <button
-              data-type={isRandom}
-              className="border-2 border-l-0 border-black rounded-r-xl bg-gray-200 hover:bg-gray-300 hover:underline p-2 transition-all duration-200 data-[type=true]:bg-sky-400"
+              text="Straight"
+            />
+            <OptionButtonRight
+              condition={isRandom}
               onClick={() => handleGameType(true)}
-            >
-              Random
-            </button>
+              text="Random"
+            />
           </div>
           <div className="flex justify-center py-4">
-            <button
-              data-difficulty={difficulty === easy}
-              className="border-2 border-r-0 border-black rounded-l-xl bg-gray-200 hover:bg-gray-300 hover:underline p-2 transition-all duration-200 data-[difficulty=true]:bg-sky-400"
+            <OptionButtonLeft
+              condition={difficulty === easy}
               onClick={() => handleDifficulty(easy)}
-            >
-              Level 1
-            </button>
-            <button
-              data-difficulty={difficulty === med}
-              className="border-y-2 border-black bg-gray-200 hover:bg-gray-300 hover:underline p-2 transition-all duration-200 data-[difficulty=true]:bg-sky-400"
+              text="Level 1"
+            />
+            <OptionButtonCenter
+              condition={difficulty === med}
               onClick={() => handleDifficulty(med)}
-            >
-              Level 2
-            </button>
-            <button
-              data-difficulty={difficulty === hard}
-              className="border-2 border-l-0 border-black rounded-r-xl bg-gray-200 hover:bg-gray-300 hover:underline p-2 transition-all duration-200 data-[difficulty=true]:bg-sky-400"
+              text="Level 2"
+            />
+            <OptionButtonCenter
+              condition={difficulty === hard}
               onClick={() => handleDifficulty(hard)}
-            >
-              Level 3
-            </button>
+              text="Level 3"
+            />
+            <OptionButtonRight
+              condition={difficulty === insanity}
+              onClick={() => handleDifficulty(insanity)}
+              text="Insanity"
+            />
           </div>
           <div className="flex flex-col gap-2 py-4">
             <div className="flex gap-2 justify-evenly">
