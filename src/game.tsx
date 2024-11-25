@@ -1,10 +1,18 @@
 import { useState, useEffect, useRef } from "react";
 import { GameInput } from "./comps";
+import useLocalStorage from "./customHooks/useLocalStorage";
 
 type GameProps = {
   myNum: number;
   reset: () => void;
   difficulty: "easy" | "med" | "hard" | "insanity";
+  type: boolean;
+};
+
+type GameProgress = {
+  number: number;
+  score: number;
+  level: string;
   type: boolean;
 };
 
@@ -18,6 +26,10 @@ export default function Game({ myNum, reset, difficulty, type }: GameProps) {
   const [gameFinished, setGameFinished] = useState(false);
   const [rightWrongList, setRightWrongList] = useState<boolean[]>([]);
   const [shuffledMathList, setShuffledMathList] = useState<number[]>([]);
+  const [, setGameProgress] = useLocalStorage<GameProgress>(
+    `${myNum}-${difficulty}-${type}-game`,
+    { number: myNum, score: 0, level: difficulty, type: type }
+  );
   const formRef = useRef(null);
 
   useEffect(() => {
@@ -102,6 +114,13 @@ export default function Game({ myNum, reset, difficulty, type }: GameProps) {
         tempRightWrongList.push(false);
       }
     }
+    const gameProgress: GameProgress = {
+      number: myNum,
+      score: tempScore,
+      level: difficulty,
+      type: type,
+    };
+    setGameProgress(gameProgress);
     setScore(tempScore);
     setDisplayScore(true);
     setGameFinished(true);
