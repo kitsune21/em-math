@@ -3,10 +3,11 @@ import { useState, useEffect, useRef } from "react";
 type GameProps = {
   myNum: number;
   reset: () => void;
-  difficulty: 'easy' | 'med' | 'hard';
+  difficulty: "easy" | "med" | "hard";
+  type: boolean;
 };
 
-export default function Game({ myNum, reset, difficulty }: GameProps) {
+export default function Game({ myNum, reset, difficulty, type }: GameProps) {
   const gameCountDown = 5;
   const [gameTimer, setGameTimer] = useState(0);
   const [startGame, setStartGame] = useState(false);
@@ -19,10 +20,10 @@ export default function Game({ myNum, reset, difficulty }: GameProps) {
   const formRef = useRef(null);
 
   useEffect(() => {
-    if(gameFinished) return;
+    if (gameFinished) return;
     const countdownInterval = setInterval(() => {
       if (startGame) {
-        if(gameTimer > 0 && !gameFinished) {
+        if (gameTimer > 0 && !gameFinished) {
           setGameTimer(gameTimer - 1);
           return;
         } else {
@@ -34,18 +35,31 @@ export default function Game({ myNum, reset, difficulty }: GameProps) {
         setSeconds(seconds - 1);
       } else {
         setStartGame(true);
-        setGameTimer(difficulty === 'easy' ? 60 : difficulty === 'med' ? 45 : 30);
+        setGameTimer(
+          difficulty === "easy" ? 60 : difficulty === "med" ? 45 : 30
+        );
         const mathList = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-        const splicePoint = difficulty === 'easy' ? 11 : difficulty === 'med' ? 13 : mathList.length + 1;
-        const mathListActual = mathList.slice(0, splicePoint)
-        const tempShuffledMathList: number[] = [];
+        const splicePoint =
+          difficulty === "easy"
+            ? 11
+            : difficulty === "med"
+            ? 13
+            : mathList.length + 1;
+        const mathListActual = mathList.slice(0, splicePoint);
         const mathListLength = mathListActual.length;
-        for (let i = 0; i < mathListLength; i++) {
-          const arrayPos = Math.floor(Math.random() * mathListActual.length);
-          const randomNumber = mathListActual.splice(arrayPos, 1)[0];
-          tempShuffledMathList.push(randomNumber);
+        const tempMathList = [];
+        if (type) {
+          for (let i = 0; i < mathListLength; i++) {
+            const arrayPos = Math.floor(Math.random() * mathListActual.length);
+            const newNumber = mathListActual.splice(arrayPos, 1)[0];
+            tempMathList.push(newNumber);
+          }
+        } else {
+          for (let i = 0; i < mathListLength; i++) {
+            tempMathList.push(mathList[i]);
+          }
         }
-        setShuffledMathList(tempShuffledMathList);
+        setShuffledMathList(tempMathList);
       }
     }, 1000);
 
@@ -92,9 +106,15 @@ export default function Game({ myNum, reset, difficulty }: GameProps) {
           {displayScore ? (
             <div className="flex flex-col gap-2">
               <div className="flex justify-evenly">
-                <span className="border-2 border-green-500 rounded-2xl p-2 bg-green-200">Your Score: {score}/{shuffledMathList.length}{" "}</span>
-                <span className="border-2 border-green-500 rounded-2xl p-2 bg-green-200">{((score / shuffledMathList.length) * 100).toFixed(2)}%</span>
-                <span className="border-2 border-green-500 rounded-2xl p-2 bg-green-200">Time Left: {gameTimer}</span>
+                <span className="border-2 border-green-500 rounded-2xl p-2 bg-green-200">
+                  Your Score: {score}/{shuffledMathList.length}{" "}
+                </span>
+                <span className="border-2 border-green-500 rounded-2xl p-2 bg-green-200">
+                  {((score / shuffledMathList.length) * 100).toFixed(2)}%
+                </span>
+                <span className="border-2 border-green-500 rounded-2xl p-2 bg-green-200">
+                  Time Left: {gameTimer}
+                </span>
               </div>
               <div className="flex justify-around">
                 <button
@@ -113,9 +133,9 @@ export default function Game({ myNum, reset, difficulty }: GameProps) {
             </div>
           ) : null}
           <form onSubmit={correctProblems} ref={formRef}>
-            {
-              startGame && !gameFinished && <p className="text-center text-2xl">Time: {gameTimer}</p>
-            }
+            {startGame && !gameFinished && (
+              <p className="text-center text-2xl">Time: {gameTimer}</p>
+            )}
             <div className="grid grid-cols-3 gap-4 items-center py-10">
               {shuffledMathList.map((number, index) => (
                 <div
@@ -136,24 +156,23 @@ export default function Game({ myNum, reset, difficulty }: GameProps) {
                 </div>
               ))}
             </div>
-            {
-              !gameFinished && startGame &&
+            {!gameFinished && startGame && (
               <div className="flex justify-around">
-              <button
-                type="submit"
-                className="text-2xl border border-green-500 bg-green-100 rounded-3xl p-8 hover:bg-green-300 transition-all duration-300 hover:underline"
-              >
-                Submit
-              </button>
-              <button
-                type="button"
-                className="text-2xl border border-red-900 bg-red-100 rounded-3xl p-8 hover:bg-red-300 transition-all duration-300 hover:underline"
-                onClick={reset}
-              >
-                Reset
-              </button>
-            </div>
-            }
+                <button
+                  type="submit"
+                  className="text-2xl border border-green-500 bg-green-100 rounded-3xl p-8 hover:bg-green-300 transition-all duration-300 hover:underline"
+                >
+                  Submit
+                </button>
+                <button
+                  type="button"
+                  className="text-2xl border border-red-900 bg-red-100 rounded-3xl p-8 hover:bg-red-300 transition-all duration-300 hover:underline"
+                  onClick={reset}
+                >
+                  Reset
+                </button>
+              </div>
+            )}
           </form>
         </div>
       )}

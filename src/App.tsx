@@ -8,6 +8,7 @@ function App() {
   const hard = "hard";
   const [selectedGame, setSelectedGame] = useState(0);
   const [difficulty, setDifficulty] = useState<"easy" | "med" | "hard">(med);
+  const [isRandom, setIsRandom] = useState(false);
 
   function reset() {
     setSelectedGame(0);
@@ -15,6 +16,10 @@ function App() {
 
   function handleDifficulty(level: "easy" | "med" | "hard") {
     setDifficulty(level);
+  }
+
+  function handleGameType(type: boolean) {
+    setIsRandom(type);
   }
 
   return (
@@ -27,6 +32,22 @@ function App() {
           <h2 className="text-xl">
             Pick which times tables you would like to practice:
           </h2>
+          <div className="flex justify-center py-4">
+            <button
+              data-type={isRandom}
+              className="border-2 border-r-0 border-black rounded-l-xl bg-gray-200 hover:bg-gray-300 hover:underline p-2 transition-all duration-200 data-[type=false]:bg-sky-400"
+              onClick={() => handleGameType(false)}
+            >
+              Straight
+            </button>
+            <button
+              data-type={isRandom}
+              className="border-2 border-l-0 border-black rounded-r-xl bg-gray-200 hover:bg-gray-300 hover:underline p-2 transition-all duration-200 data-[type=true]:bg-sky-400"
+              onClick={() => handleGameType(true)}
+            >
+              Random
+            </button>
+          </div>
           <div className="flex justify-center py-4">
             <button
               data-difficulty={difficulty === easy}
@@ -74,7 +95,12 @@ function App() {
           </div>
         </div>
       ) : (
-        <Game myNum={selectedGame} reset={reset} difficulty={difficulty} />
+        <Game
+          myNum={selectedGame}
+          reset={reset}
+          difficulty={difficulty}
+          type={isRandom}
+        />
       )}
     </section>
   );
