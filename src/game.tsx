@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
+import { GameInput } from "./comps";
 
 type GameProps = {
   myNum: number;
   reset: () => void;
-  difficulty: "easy" | "med" | "hard";
+  difficulty: "easy" | "med" | "hard" | "insanity";
   type: boolean;
 };
 
@@ -20,6 +21,18 @@ export default function Game({ myNum, reset, difficulty, type }: GameProps) {
   const formRef = useRef(null);
 
   useEffect(() => {
+    if (startGame) return;
+    if (seconds <= 0) startTheGameAlready();
+    const countdownInterval = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1);
+      }
+    }, 1000);
+
+    return () => clearInterval(countdownInterval);
+  }, [seconds, startGame]);
+
+  useEffect(() => {
     if (gameFinished) return;
     const countdownInterval = setInterval(() => {
       if (startGame) {
@@ -31,40 +44,49 @@ export default function Game({ myNum, reset, difficulty, type }: GameProps) {
           return;
         }
       }
-      if (seconds > 0) {
-        setSeconds(seconds - 1);
-      } else {
-        setStartGame(true);
-        setGameTimer(
-          difficulty === "easy" ? 60 : difficulty === "med" ? 45 : 30
-        );
-        const mathList = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-        const splicePoint =
-          difficulty === "easy"
-            ? 11
-            : difficulty === "med"
-            ? 13
-            : mathList.length + 1;
-        const mathListActual = mathList.slice(0, splicePoint);
-        const mathListLength = mathListActual.length;
-        const tempMathList = [];
-        if (type) {
-          for (let i = 0; i < mathListLength; i++) {
-            const arrayPos = Math.floor(Math.random() * mathListActual.length);
-            const newNumber = mathListActual.splice(arrayPos, 1)[0];
-            tempMathList.push(newNumber);
-          }
-        } else {
-          for (let i = 0; i < mathListLength; i++) {
-            tempMathList.push(mathList[i]);
-          }
-        }
-        setShuffledMathList(tempMathList);
-      }
     }, 1000);
 
     return () => clearInterval(countdownInterval);
-  }, [seconds, startGame, difficulty, gameTimer, gameFinished]);
+  }, [startGame, gameTimer, gameFinished]);
+
+  function startTheGameAlready() {
+    setStartGame(true);
+    setGameTimer(
+      difficulty === "easy"
+        ? 60
+        : difficulty === "med"
+        ? 45
+        : difficulty === "hard"
+        ? 30
+        : 25
+    );
+    const mathList = [
+      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+    ];
+    const splicePoint =
+      difficulty === "easy"
+        ? 12
+        : difficulty === "med"
+        ? 14
+        : difficulty === "hard"
+        ? 16
+        : mathList.length + 1;
+    const mathListActual = mathList.slice(0, splicePoint);
+    const mathListLength = mathListActual.length;
+    const tempMathList = [];
+    if (type) {
+      for (let i = 0; i < mathListLength; i++) {
+        const arrayPos = Math.floor(Math.random() * mathListActual.length);
+        const newNumber = mathListActual.splice(arrayPos, 1)[0];
+        tempMathList.push(newNumber);
+      }
+    } else {
+      for (let i = 0; i < mathListLength; i++) {
+        tempMathList.push(mathList[i]);
+      }
+    }
+    setShuffledMathList(tempMathList);
+  }
 
   function correctProblems(e: React.FormEvent<HTMLFormElement> | null) {
     if (e) e.preventDefault();
@@ -138,22 +160,14 @@ export default function Game({ myNum, reset, difficulty, type }: GameProps) {
             )}
             <div className="grid grid-cols-3 gap-4 items-center py-10">
               {shuffledMathList.map((number, index) => (
-                <div
+                <GameInput
                   key={number}
-                  className="flex justify-evenly items-center gap-1"
-                >
-                  <label className="w-18 text-lg" htmlFor={`number-${number}`}>
-                    {number} * {myNum} =
-                  </label>
-                  <input
-                    id={`number-${number}`}
-                    type="number"
-                    className="border border-black w-12 rounded-lg py-2 text-center data-[right=true]:border-green-500 data-[right=false]:border-rose-500 data-[right=true]:bg-green-300 data-[right=false]:bg-rose-300"
-                    autoFocus={!index}
-                    disabled={gameFinished}
-                    data-right={rightWrongList[index]}
-                  />
-                </div>
+                  number={number}
+                  myNum={myNum}
+                  index={index}
+                  gameFinished={gameFinished}
+                  rightWrongList={rightWrongList}
+                />
               ))}
             </div>
             {!gameFinished && startGame && (
