@@ -44,7 +44,7 @@ function App() {
             <OptionButtonLeft
               condition={!isRandom}
               onClick={() => handleGameType(false)}
-              text="Straight"
+              text="Linear"
             />
             <OptionButtonRight
               condition={isRandom}
