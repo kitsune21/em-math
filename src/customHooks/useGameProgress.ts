@@ -4,6 +4,7 @@ type GameProgress = {
   score: number;
   level: string;
   type: boolean;
+  passed: boolean;
 };
 
 type TimesTableProgress = {
@@ -20,12 +21,7 @@ type TimesTableProgress = {
 export default function useGameProgress(): [
   TimesTableProgress,
   (number: number, level: string, type: boolean) => GameProgress | undefined,
-  (
-    number: number,
-    level: string,
-    type: boolean,
-    progress: GameProgress
-  ) => void,
+  (number: number, progress: GameProgress) => void,
   () => void
 ] {
   const key = "timesTables"; // Key for localStorage to store all times table progress
@@ -67,12 +63,7 @@ export default function useGameProgress(): [
   };
 
   // Update or add a new times table progress for a specific level and type
-  const updateTimesTableProgress = (
-    number: number,
-    level: string,
-    type: boolean,
-    progress: GameProgress
-  ) => {
+  const updateTimesTableProgress = (number: number, progress: GameProgress) => {
     setTimesTables((prevTables) => {
       const updatedTables = { ...prevTables };
 
@@ -82,12 +73,12 @@ export default function useGameProgress(): [
 
       const tableProgress = updatedTables[number];
 
-      if (type) {
+      if (progress.type) {
         // Update random mode
-        tableProgress.random[level] = progress;
+        tableProgress.random[progress.level] = progress;
       } else {
         // Update linear mode
-        tableProgress.linear[level] = progress;
+        tableProgress.linear[progress.level] = progress;
       }
 
       return updatedTables;

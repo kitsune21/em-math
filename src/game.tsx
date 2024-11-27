@@ -1,22 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { GameInput } from "./comps";
-import useLocalStorage from "./customHooks/useLocalStorage";
+import useGameProgress from "./customHooks/useGameProgress";
+import { useParams, useNavigate } from "react-router";
 
-type GameProps = {
-  myNum: number;
-  reset: () => void;
-  difficulty: "easy" | "med" | "hard" | "insanity";
-  type: boolean;
-};
-
-type GameProgress = {
-  number: number;
-  score: number;
-  level: string;
-  type: boolean;
-};
-
-export default function Game({ myNum, reset, difficulty, type }: GameProps) {
+export default function Game() {
   const gameCountDown = 5;
   const [gameTimer, setGameTimer] = useState(0);
   const [startGame, setStartGame] = useState(false);
@@ -26,11 +13,13 @@ export default function Game({ myNum, reset, difficulty, type }: GameProps) {
   const [gameFinished, setGameFinished] = useState(false);
   const [rightWrongList, setRightWrongList] = useState<boolean[]>([]);
   const [shuffledMathList, setShuffledMathList] = useState<number[]>([]);
-  const [, setGameProgress] = useLocalStorage<GameProgress>(
-    `${myNum}-${difficulty}-${type}-game`,
-    { number: myNum, score: 0, level: difficulty, type: type }
-  );
+  const [, , updateTimesTableProgress] = useGameProgress();
   const formRef = useRef(null);
+  const { number, difficulty, type } = useParams();
+  const navigate = useNavigate();
+  if (number === undefined || difficulty === undefined || type === undefined)
+    navigate("/");
+  const myNum = parseInt(number!);
 
   useEffect(() => {
     if (startGame) return;
@@ -86,7 +75,7 @@ export default function Game({ myNum, reset, difficulty, type }: GameProps) {
     const mathListActual = mathList.slice(0, splicePoint);
     const mathListLength = mathListActual.length;
     const tempMathList = [];
-    if (type) {
+    if (type === "random") {
       for (let i = 0; i < mathListLength; i++) {
         const arrayPos = Math.floor(Math.random() * mathListActual.length);
         const newNumber = mathListActual.splice(arrayPos, 1)[0];
@@ -114,13 +103,12 @@ export default function Game({ myNum, reset, difficulty, type }: GameProps) {
         tempRightWrongList.push(false);
       }
     }
-    const gameProgress: GameProgress = {
-      number: myNum,
+    updateTimesTableProgress(myNum, {
+      level: difficulty!,
+      type: type === "random",
       score: tempScore,
-      level: difficulty,
-      type: type,
-    };
-    setGameProgress(gameProgress);
+      passed: tempRightWrongList.length === tempScore,
+    });
     setScore(tempScore);
     setDisplayScore(true);
     setGameFinished(true);
@@ -136,8 +124,12 @@ export default function Game({ myNum, reset, difficulty, type }: GameProps) {
     setStartGame(false);
   }
 
+  function reset() {
+    navigate("/");
+  }
+
   return (
-    <div>
+    <section className="p-4 flex justify-center">
       {!startGame ? (
         <p className="text-4xl text-red-700">
           {seconds > 0 ? `Game Starting in: ${seconds}...` : "Start!"}
@@ -209,6 +201,6 @@ export default function Game({ myNum, reset, difficulty, type }: GameProps) {
           </form>
         </div>
       )}
-    </div>
+    </section>
   );
 }
