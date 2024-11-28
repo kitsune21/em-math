@@ -6,6 +6,7 @@ import {
   OptionButtonRight,
 } from "./comps";
 import useGameProgress from "./customHooks/useGameProgress";
+import useLocalStorage from "./customHooks/useLocalStorage";
 import { useNavigate } from "react-router";
 
 function App() {
@@ -13,10 +14,10 @@ function App() {
   const med = "med";
   const hard = "hard";
   const insanity = "insanity";
-  const [difficulty, setDifficulty] = useState<
+  const [difficulty, setDifficulty] = useLocalStorage<
     "easy" | "med" | "hard" | "insanity"
-  >(med);
-  const [isRandom, setIsRandom] = useState(false);
+  >("difficulty", med);
+  const [isRandom, setIsRandom] = useLocalStorage("isRandom", false);
   const [timesTables, getTimesTableProgress] = useGameProgress();
   const [progressArray, setProgressArray] = useState<boolean[][]>([]);
   const navigate = useNavigate();
