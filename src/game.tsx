@@ -128,6 +128,23 @@ export default function Game() {
     navigate("/");
   }
 
+  function nextLevel() {
+    let nextDifficulty;
+    if (difficulty === "easy") {
+      nextDifficulty = "med";
+    } else if (difficulty === "med") {
+      nextDifficulty = "hard";
+    } else {
+      nextDifficulty = "insane";
+    }
+    resetCurrentGame();
+    navigate(
+      `/game/${number}/${nextDifficulty}/${
+        type === "random" ? "random" : "not"
+      }`
+    );
+  }
+
   return (
     <section className="p-4 flex justify-center">
       {!startGame ? (
@@ -162,6 +179,14 @@ export default function Game() {
                 >
                   Go Back
                 </button>
+                {difficulty !== "insane" && (
+                  <button
+                    onClick={nextLevel}
+                    className="border-purple-500 border-2 bg-purple-100 p-2 rounded-lg hover:bg-purple-300 transition-all duration-300"
+                  >
+                    Next Level
+                  </button>
+                )}
               </div>
             </div>
           ) : null}
@@ -194,7 +219,7 @@ export default function Game() {
                   className="text-2xl border border-red-900 bg-red-100 rounded-3xl p-8 hover:bg-red-300 transition-all duration-300 hover:underline"
                   onClick={reset}
                 >
-                  Reset
+                  Return
                 </button>
               </div>
             )}
