@@ -152,20 +152,26 @@ export default function Game() {
           {seconds > 0 ? `Game Starting in: ${seconds}...` : "Start!"}
         </p>
       ) : (
-        <div>
+        <div className="w-max">
           {displayScore ? (
             <div className="flex flex-col gap-2">
-              <h1 className="text-4xl text-center text-emerald-500 py-4 animate-bounce">
-                You Cleared{" "}
-                {difficulty === "easy"
-                  ? "Level 1"
-                  : difficulty === "med"
-                  ? "Level 2"
-                  : difficulty === "hard"
-                  ? "Level 3"
-                  : "Insanity"}
-                !
-              </h1>
+              {score === shuffledMathList.length ? (
+                <h1 className="text-4xl text-center text-emerald-500 py-4 animate-bounce">
+                  You Cleared{" "}
+                  {difficulty === "easy"
+                    ? "Level 1"
+                    : difficulty === "med"
+                    ? "Level 2"
+                    : difficulty === "hard"
+                    ? "Level 3"
+                    : "Insanity"}
+                  !
+                </h1>
+              ) : (
+                <h1 className="text-2xl text-center py-4 text-wrap">
+                  Don't worry, you'll get it next time!
+                </h1>
+              )}
               <div className="flex justify-evenly">
                 <span className="border-2 border-green-500 rounded-2xl p-2 bg-green-200">
                   Your Score: {score}/{shuffledMathList.length}{" "}
