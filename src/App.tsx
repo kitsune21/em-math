@@ -24,7 +24,7 @@ function App() {
 
   useEffect(() => {
     const tempProgressArray = [];
-    for (let i = 1; i <= 12; i++) {
+    for (let i = 1; i <= 20; i++) {
       const easy = getTimesTableProgress(i, "easy", isRandom)?.passed || false;
       const med = getTimesTableProgress(i, "med", isRandom)?.passed || false;
       const hard = getTimesTableProgress(i, "hard", isRandom)?.passed || false;
@@ -160,6 +160,57 @@ function App() {
               selectGame={() => handleSelectGame(12)}
               progress={progressArray[11]}
             />
+          </div>
+          <div className="flex flex-col gap-2">
+            <h2 className="text-center text-2xl py-2 underline">
+              Bonus Levels
+            </h2>
+            <div className="flex gap-2 justify-evenly">
+              <PracticeButton
+                myNum={13}
+                selectGame={() => handleSelectGame(13)}
+                progress={progressArray[12]}
+              />
+              <PracticeButton
+                myNum={14}
+                selectGame={() => handleSelectGame(14)}
+                progress={progressArray[13]}
+              />
+              <PracticeButton
+                myNum={15}
+                selectGame={() => handleSelectGame(15)}
+                progress={progressArray[14]}
+              />
+            </div>
+            <div className="flex gap-2 justify-evenly">
+              <PracticeButton
+                myNum={16}
+                selectGame={() => handleSelectGame(16)}
+                progress={progressArray[15]}
+              />
+              <PracticeButton
+                myNum={17}
+                selectGame={() => handleSelectGame(17)}
+                progress={progressArray[16]}
+              />
+              <PracticeButton
+                myNum={18}
+                selectGame={() => handleSelectGame(18)}
+                progress={progressArray[17]}
+              />
+            </div>
+            <div className="flex gap-2 justify-evenly">
+              <PracticeButton
+                myNum={19}
+                selectGame={() => handleSelectGame(19)}
+                progress={progressArray[18]}
+              />
+              <PracticeButton
+                myNum={20}
+                selectGame={() => handleSelectGame(20)}
+                progress={progressArray[19]}
+              />
+            </div>
           </div>
         </div>
       </div>
