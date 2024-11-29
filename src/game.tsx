@@ -135,7 +135,7 @@ export default function Game() {
     } else if (difficulty === "med") {
       nextDifficulty = "hard";
     } else {
-      nextDifficulty = "insane";
+      nextDifficulty = "insanity";
     }
     resetCurrentGame();
     navigate(
@@ -155,6 +155,17 @@ export default function Game() {
         <div>
           {displayScore ? (
             <div className="flex flex-col gap-2">
+              <h1 className="text-4xl text-center text-emerald-500 py-4 animate-bounce">
+                You Cleared{" "}
+                {difficulty === "easy"
+                  ? "Level 1"
+                  : difficulty === "med"
+                  ? "Level 2"
+                  : difficulty === "hard"
+                  ? "Level 3"
+                  : "Insanity"}
+                !
+              </h1>
               <div className="flex justify-evenly">
                 <span className="border-2 border-green-500 rounded-2xl p-2 bg-green-200">
                   Your Score: {score}/{shuffledMathList.length}{" "}
@@ -179,7 +190,7 @@ export default function Game() {
                 >
                   Go Back
                 </button>
-                {difficulty !== "insane" && (
+                {difficulty !== "insanity" && (
                   <button
                     onClick={nextLevel}
                     className="border-purple-500 border-2 bg-purple-100 p-2 rounded-lg hover:bg-purple-300 transition-all duration-300"
