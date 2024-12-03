@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { GameInput } from "./comps";
 import useGameProgress from "./customHooks/useGameProgress";
 import { useParams, useNavigate } from "react-router";
+import useUser from "./customHooks/useUser";
 
 export default function Game() {
   const gameCountDown = 5;
@@ -20,6 +21,7 @@ export default function Game() {
   if (number === undefined || difficulty === undefined || type === undefined)
     navigate("/");
   const myNum = parseInt(number!);
+  const { user } = useUser();
 
   useEffect(() => {
     if (startGame) return;
@@ -156,17 +158,22 @@ export default function Game() {
           {displayScore ? (
             <div className="flex flex-col gap-2">
               {score === shuffledMathList.length ? (
-                <h1 className="text-4xl text-center text-emerald-500 py-4 animate-bounce">
-                  You Cleared{" "}
-                  {difficulty === "easy"
-                    ? "Level 1"
-                    : difficulty === "med"
-                    ? "Level 2"
-                    : difficulty === "hard"
-                    ? "Level 3"
-                    : "Insanity"}
-                  !
-                </h1>
+                <div>
+                  <h1 className="text-4xl text-center text-emerald-500 py-4 animate-bounce">
+                    You Cleared{" "}
+                    {difficulty === "easy"
+                      ? "Level 1"
+                      : difficulty === "med"
+                      ? "Level 2"
+                      : difficulty === "hard"
+                      ? "Level 3"
+                      : "Insanity"}
+                    !
+                  </h1>
+                  <h2 className="text-2xl text-center text-emerald-500 py-4">
+                    You earned a {user!.reward}!
+                  </h2>
+                </div>
               ) : (
                 <h1 className="text-2xl text-center py-4 text-wrap">
                   Don't worry, you'll get it next time!

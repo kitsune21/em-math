@@ -4,9 +4,11 @@ import {
   OptionButtonLeft,
   OptionButtonCenter,
   OptionButtonRight,
+  CreateUserModal,
 } from "./comps";
 import useGameProgress from "./customHooks/useGameProgress";
 import useLocalStorage from "./customHooks/useLocalStorage";
+import useUser from "./customHooks/useUser";
 import { useNavigate } from "react-router";
 
 function App() {
@@ -20,6 +22,7 @@ function App() {
   const [isRandom, setIsRandom] = useLocalStorage("isRandom", false);
   const [timesTables, getTimesTableProgress] = useGameProgress();
   const [progressArray, setProgressArray] = useState<boolean[][]>([]);
+  const { user, createUser } = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -50,10 +53,14 @@ function App() {
 
   if (progressArray.length === 0) return;
 
+  if (!user) return <CreateUserModal createUser={createUser} />;
+
   return (
     <section className="flex items-center py-10 flex-col">
       <div className="flex p-4 flex-col">
-        <h1 className="text-2xl underline text-center">Welcome to Em Math!</h1>
+        <h1 className="text-2xl underline text-center">
+          Welcome back, {user.name}!
+        </h1>
         <h2 className="text-xl">
           Pick which times tables you would like to practice:
         </h2>
@@ -97,16 +104,19 @@ function App() {
               myNum={1}
               selectGame={() => handleSelectGame(1)}
               progress={progressArray[0]}
+              passOffLevel={user.passOffLevel}
             />
             <PracticeButton
               myNum={2}
               selectGame={() => handleSelectGame(2)}
               progress={progressArray[1]}
+              passOffLevel={user.passOffLevel}
             />
             <PracticeButton
               myNum={3}
               selectGame={() => handleSelectGame(3)}
               progress={progressArray[2]}
+              passOffLevel={user.passOffLevel}
             />
           </div>
           <div className="flex gap-2 justify-evenly">
@@ -115,16 +125,19 @@ function App() {
               myNum={4}
               selectGame={() => handleSelectGame(4)}
               progress={progressArray[3]}
+              passOffLevel={user.passOffLevel}
             />
             <PracticeButton
               myNum={5}
               selectGame={() => handleSelectGame(5)}
               progress={progressArray[4]}
+              passOffLevel={user.passOffLevel}
             />
             <PracticeButton
               myNum={6}
               selectGame={() => handleSelectGame(6)}
               progress={progressArray[5]}
+              passOffLevel={user.passOffLevel}
             />
           </div>
           <div className="flex gap-2 justify-evenly">
@@ -132,16 +145,19 @@ function App() {
               myNum={7}
               selectGame={() => handleSelectGame(7)}
               progress={progressArray[6]}
+              passOffLevel={user.passOffLevel}
             />
             <PracticeButton
               myNum={8}
               selectGame={() => handleSelectGame(8)}
               progress={progressArray[7]}
+              passOffLevel={user.passOffLevel}
             />
             <PracticeButton
               myNum={9}
               selectGame={() => handleSelectGame(9)}
               progress={progressArray[8]}
+              passOffLevel={user.passOffLevel}
             />
           </div>
           <div className="flex gap-2 justify-evenly">
@@ -149,16 +165,19 @@ function App() {
               myNum={10}
               selectGame={() => handleSelectGame(10)}
               progress={progressArray[9]}
+              passOffLevel={user.passOffLevel}
             />
             <PracticeButton
               myNum={11}
               selectGame={() => handleSelectGame(11)}
               progress={progressArray[10]}
+              passOffLevel={user.passOffLevel}
             />
             <PracticeButton
               myNum={12}
               selectGame={() => handleSelectGame(12)}
               progress={progressArray[11]}
+              passOffLevel={user.passOffLevel}
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -170,16 +189,19 @@ function App() {
                 myNum={13}
                 selectGame={() => handleSelectGame(13)}
                 progress={progressArray[12]}
+                passOffLevel={user.passOffLevel}
               />
               <PracticeButton
                 myNum={14}
                 selectGame={() => handleSelectGame(14)}
                 progress={progressArray[13]}
+                passOffLevel={user.passOffLevel}
               />
               <PracticeButton
                 myNum={15}
                 selectGame={() => handleSelectGame(15)}
                 progress={progressArray[14]}
+                passOffLevel={user.passOffLevel}
               />
             </div>
             <div className="flex gap-2 justify-evenly">
@@ -187,16 +209,19 @@ function App() {
                 myNum={16}
                 selectGame={() => handleSelectGame(16)}
                 progress={progressArray[15]}
+                passOffLevel={user.passOffLevel}
               />
               <PracticeButton
                 myNum={17}
                 selectGame={() => handleSelectGame(17)}
                 progress={progressArray[16]}
+                passOffLevel={user.passOffLevel}
               />
               <PracticeButton
                 myNum={18}
                 selectGame={() => handleSelectGame(18)}
                 progress={progressArray[17]}
+                passOffLevel={user.passOffLevel}
               />
             </div>
             <div className="flex gap-2 justify-evenly">
@@ -204,11 +229,13 @@ function App() {
                 myNum={19}
                 selectGame={() => handleSelectGame(19)}
                 progress={progressArray[18]}
+                passOffLevel={user.passOffLevel}
               />
               <PracticeButton
                 myNum={20}
                 selectGame={() => handleSelectGame(20)}
                 progress={progressArray[19]}
+                passOffLevel={user.passOffLevel}
               />
             </div>
           </div>
