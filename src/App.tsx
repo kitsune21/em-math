@@ -39,7 +39,7 @@ function App() {
       tempProgressArray.push([easy, med, hard, insanity]);
     }
     setProgressArray(tempProgressArray);
-  }, [timesTables, isRandom]);
+  }, [timesTables, isRandom, getTimesTableProgress]);
 
   function handleDifficulty(level: "easy" | "med" | "hard" | "insanity") {
     setDifficulty(level);

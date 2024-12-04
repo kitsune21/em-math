@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 type GameProgress = {
   score: number;
@@ -51,16 +51,19 @@ export default function useGameProgress(): [
   }, [timesTables]);
 
   // Get the progress for a specific times table, level, and type
-  const getTimesTableProgress = (
-    number: number,
-    level: string,
-    type: boolean
-  ): GameProgress | undefined => {
-    const tableProgress = timesTables[number];
-    if (!tableProgress) return undefined;
+  const getTimesTableProgress = useCallback(
+    (
+      number: number,
+      level: string,
+      type: boolean
+    ): GameProgress | undefined => {
+      const tableProgress = timesTables[number];
+      if (!tableProgress) return undefined;
 
-    return type ? tableProgress.random[level] : tableProgress.linear[level];
-  };
+      return type ? tableProgress.random[level] : tableProgress.linear[level];
+    },
+    [timesTables] // Add timesTables as a dependency since it's used in the function
+  );
 
   // Update or add a new times table progress for a specific level and type
   const updateTimesTableProgress = (number: number, progress: GameProgress) => {
