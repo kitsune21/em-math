@@ -10,9 +10,14 @@ type User = {
 export default function useUser() {
   const [user, setUser] = useLocalStorage<User | null>("user", null);
 
-  function createUser(name: string, reward: string, passOffLevel: string) {
-    setUser({ name, reward, timerBoosts: 0, passOffLevel });
+  function updateUser(updatedUser: User) {
+    setUser({
+      name: updatedUser.name,
+      reward: updatedUser.reward,
+      timerBoosts: 0,
+      passOffLevel: updatedUser.passOffLevel,
+    });
   }
 
-  return { user, createUser };
+  return { user, updateUser };
 }

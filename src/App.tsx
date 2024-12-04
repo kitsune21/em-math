@@ -1,15 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   PracticeButton,
   OptionButtonLeft,
   OptionButtonCenter,
   OptionButtonRight,
   CreateUserModal,
+  UserModal,
 } from "./comps";
 import useGameProgress from "./customHooks/useGameProgress";
 import useLocalStorage from "./customHooks/useLocalStorage";
-import useUser from "./customHooks/useUser";
 import { useNavigate } from "react-router";
+import { UserContext } from "./context/userContext";
 
 function App() {
   const easy = "easy";
@@ -22,7 +23,8 @@ function App() {
   const [isRandom, setIsRandom] = useLocalStorage("isRandom", false);
   const [timesTables, getTimesTableProgress] = useGameProgress();
   const [progressArray, setProgressArray] = useState<boolean[][]>([]);
-  const { user, createUser } = useUser();
+  const [showEditUser, setShowEditUser] = useState(false);
+  const { user } = useContext(UserContext) || {};
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -51,16 +53,27 @@ function App() {
     navigate(`game/${number}/${difficulty}/${isRandom ? "random" : "not"}`);
   }
 
+  function handleProfileButton() {
+    setShowEditUser(!showEditUser);
+  }
+
   if (progressArray.length === 0) return;
 
-  if (!user) return <CreateUserModal createUser={createUser} />;
+  if (!user) return <CreateUserModal />;
 
   return (
-    <section className="flex items-center py-10 flex-col">
-      <div className="flex p-4 flex-col">
-        <h1 className="text-2xl underline text-center">
-          Welcome back, {user.name}!
+    <section className="flex flex-col">
+      <nav className="flex justify-end">
+        <h1 className="text-2xl text-center pr-4">
+          Welcome,{" "}
+          <button className="underline" onClick={handleProfileButton}>
+            {user.name}
+          </button>
+          !
         </h1>
+        {showEditUser && <UserModal close={handleProfileButton} />}
+      </nav>
+      <div className="flex items-center p-4 flex-col">
         <h2 className="text-xl">
           Pick which times tables you would like to practice:
         </h2>
