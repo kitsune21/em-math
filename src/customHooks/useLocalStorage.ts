@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { SetStateAction, useState } from "react";
 
 /**
  * Custom hook to manage localStorage with a default value fallback.
@@ -25,16 +25,10 @@ export default function useLocalStorage<T>(
 
   const [storedValue, setStoredValue] = useState<T>(getStoredValue);
 
-  // Update localStorage whenever the stored value changes
-  useEffect(() => {
-    if (storedValue !== undefined) {
-      try {
-        localStorage.setItem(key, JSON.stringify(storedValue));
-      } catch (error) {
-        console.error("Error writing to localStorage:", error);
-      }
-    }
-  }, [key, storedValue]);
+  const updateValue = (newValue: SetStateAction<T>) => {
+    setStoredValue(newValue);
+    localStorage.setItem(key, JSON.stringify(newValue));
+  };
 
-  return [storedValue, setStoredValue];
+  return [storedValue, updateValue];
 }
