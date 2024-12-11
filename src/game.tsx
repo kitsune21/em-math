@@ -170,9 +170,11 @@ export default function Game() {
                       : "Insanity"}
                     !
                   </h1>
-                  <h2 className="text-2xl text-center text-emerald-500 py-4">
-                    You earned a {user!.reward}!
-                  </h2>
+                  {user?.passOffLevel === difficulty && (
+                    <h2 className="text-2xl text-center text-emerald-500 py-4">
+                      You earned a {user!.reward}!
+                    </h2>
+                  )}
                 </div>
               ) : (
                 <h1 className="text-2xl text-center py-4 text-wrap">
