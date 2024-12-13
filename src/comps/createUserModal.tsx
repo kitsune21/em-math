@@ -13,7 +13,7 @@ export default function CreateUserModal() {
         name: nameInput.value,
         reward: rewardInput.value,
         passOffLevel: passOffSelect.value,
-        timerBoosts: 0,
+        timeBank: 30,
       };
       handleUserUpdate(newUser);
     }
@@ -21,7 +21,7 @@ export default function CreateUserModal() {
 
   return (
     <dialog
-      className="fixed top-10 py-4 border border-cyan-500 rounded-xl"
+      className="fixed top-10 py-4 border border-cyan-500 rounded-xl bg-white"
       open
     >
       <form onSubmit={handleSubmit} className="flex flex-col gap-2 w-72 px-4">
