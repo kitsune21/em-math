@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from "react";
-import { GameInput } from "./comps";
+import { useState, useEffect, useRef, useContext } from "react";
+import { GameInput, TimerModal } from "./comps";
 import useGameProgress from "./customHooks/useGameProgress";
 import { useParams, useNavigate } from "react-router";
-import useUser from "./customHooks/useUser";
+import { UserContext } from "./context/userContext";
 
 export default function Game() {
   const gameCountDown = 5;
@@ -14,14 +14,17 @@ export default function Game() {
   const [gameFinished, setGameFinished] = useState(false);
   const [rightWrongList, setRightWrongList] = useState<boolean[]>([]);
   const [shuffledMathList, setShuffledMathList] = useState<number[]>([]);
-  const [, , updateTimesTableProgress] = useGameProgress();
+  const [showTimerModal, setShowTimerModal] = useState(false);
+  const [timeBanked, setTimeBanked] = useState(0);
+  const [hasUsedBank, setHasUsedBank] = useState(false);
+  const { updateTimesTableProgress, getTimesTableProgress } = useGameProgress();
   const formRef = useRef(null);
   const { number, difficulty, type } = useParams();
   const navigate = useNavigate();
   if (number === undefined || difficulty === undefined || type === undefined)
     navigate("/");
   const myNum = parseInt(number!);
-  const { user } = useUser();
+  const { user, bankTime } = useContext(UserContext) || {};
 
   useEffect(() => {
     if (startGame) return;
@@ -43,7 +46,7 @@ export default function Game() {
           setGameTimer(gameTimer - 1);
           return;
         } else {
-          correctProblems(null);
+          setShowTimerModal(true);
           return;
         }
       }
@@ -115,6 +118,22 @@ export default function Game() {
     setDisplayScore(true);
     setGameFinished(true);
     setRightWrongList(tempRightWrongList);
+    const isPassed = getTimesTableProgress(
+      myNum,
+      difficulty!,
+      type === "random"
+    )?.passed;
+    if (tempRightWrongList.length === tempScore && !isPassed) {
+      let timeToBank = gameTimer;
+      if (difficulty !== "insanity" && type !== "random") {
+        timeToBank /= 2;
+      }
+      if (difficulty === "insanity" && !hasUsedBank) {
+        timeToBank *= 2;
+      }
+      setTimeBanked(timeToBank);
+      if (bankTime) bankTime(timeToBank);
+    }
   }
 
   function resetCurrentGame() {
@@ -124,6 +143,8 @@ export default function Game() {
     setRightWrongList([]);
     setSeconds(gameCountDown);
     setStartGame(false);
+    setTimeBanked(0);
+    setHasUsedBank(false);
   }
 
   function reset() {
@@ -147,8 +168,34 @@ export default function Game() {
     );
   }
 
+  function selectYes(numSeconds: number) {
+    setGameTimer(numSeconds);
+    setShowTimerModal(false);
+    setHasUsedBank(true);
+    if (!formRef.current) return;
+    for (let i = 0; i < shuffledMathList.length; i++) {
+      // @ts-expect-error need to fix types here
+      if (!formRef.current[i].value > 0) {
+        // @ts-expect-error need to fix types here
+        formRef.current[i].focus();
+        return;
+      }
+    }
+  }
+
+  function selectNo() {
+    correctProblems(null);
+    setShowTimerModal(false);
+  }
+
   return (
     <section className="p-4 flex justify-center">
+      <TimerModal
+        key={`${myNum}-${difficulty}-${type}`}
+        open={showTimerModal}
+        selectYes={selectYes}
+        selectNo={selectNo}
+      />
       {!startGame ? (
         <p className="text-4xl text-red-700">
           {seconds > 0 ? `Game Starting in: ${seconds}...` : "Start!"}
@@ -187,7 +234,7 @@ export default function Game() {
                   {((score / shuffledMathList.length) * 100).toFixed(2)}%
                 </span>
                 <span className="border-2 border-green-500 rounded-2xl p-2 bg-green-200">
-                  Time Left: {gameTimer}
+                  Time Banked: {timeBanked}
                 </span>
               </div>
               <div className="flex justify-around">

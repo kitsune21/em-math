@@ -3,7 +3,7 @@ import useLocalStorage from "./useLocalStorage";
 type User = {
   name: string;
   reward: string;
-  timerBoosts: number;
+  timeBank: number;
   passOffLevel: string;
 };
 
@@ -14,7 +14,7 @@ export default function useUser() {
     setUser({
       name: updatedUser.name,
       reward: updatedUser.reward,
-      timerBoosts: 0,
+      timeBank: updatedUser.timeBank,
       passOffLevel: updatedUser.passOffLevel,
     });
   }

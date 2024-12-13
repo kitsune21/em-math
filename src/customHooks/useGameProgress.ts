@@ -18,12 +18,16 @@ type TimesTableProgress = {
   };
 };
 
-export default function useGameProgress(): [
-  TimesTableProgress,
-  (number: number, level: string, type: boolean) => GameProgress | undefined,
-  (number: number, progress: GameProgress) => void,
-  () => void
-] {
+export default function useGameProgress(): {
+  timesTables: TimesTableProgress;
+  getTimesTableProgress: (
+    number: number,
+    level: string,
+    type: boolean
+  ) => GameProgress | undefined;
+  updateTimesTableProgress: (number: number, progress: GameProgress) => void;
+  resetTimesTablesProgress: () => void;
+} {
   const key = "timesTables"; // Key for localStorage to store all times table progress
 
   // Retrieve all times table progress from localStorage or set default value
@@ -93,10 +97,10 @@ export default function useGameProgress(): [
     setTimesTables({});
   };
 
-  return [
+  return {
     timesTables,
     getTimesTableProgress,
     updateTimesTableProgress,
     resetTimesTablesProgress,
-  ];
+  };
 }

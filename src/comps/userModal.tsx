@@ -18,7 +18,7 @@ export default function UserModal({ close }: UserModalProps) {
         name: nameInput.value,
         reward: rewardInput.value,
         passOffLevel: passOffSelect.value,
-        timerBoosts: user.timerBoosts,
+        timeBank: user.timeBank,
       };
       handleUserUpdate(updatedUser);
       close();
@@ -26,7 +26,7 @@ export default function UserModal({ close }: UserModalProps) {
   }
 
   return (
-    <div className="fixed top-10 right-2 py-4 border border-cyan-500 rounded-xl">
+    <div className="fixed top-10 right-2 py-4 border border-cyan-500 rounded-xl bg-white">
       <form onSubmit={handleSubmit} className="flex flex-col gap-2 w-72 px-4">
         <h1 className="text-center">Update Your Account</h1>
         <div className="flex flex-col">

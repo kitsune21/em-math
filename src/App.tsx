@@ -21,7 +21,7 @@ function App() {
     "easy" | "med" | "hard" | "insanity"
   >("difficulty", med);
   const [isRandom, setIsRandom] = useLocalStorage("isRandom", false);
-  const [timesTables, getTimesTableProgress] = useGameProgress();
+  const { timesTables, getTimesTableProgress } = useGameProgress();
   const [progressArray, setProgressArray] = useState<boolean[][]>([]);
   const [showEditUser, setShowEditUser] = useState(false);
   const { user } = useContext(UserContext) || {};
