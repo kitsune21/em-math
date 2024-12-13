@@ -63,7 +63,10 @@ function App() {
 
   return (
     <section className="flex flex-col">
-      <nav className="flex justify-end">
+      <nav className="flex justify-end pt-2 items-center gap-2">
+        <div className="flex items-center justify-center p-2 border-emerald-300 rounded-xl border-2">
+          <span>Time Bank: {user.timeBank} seconds</span>
+        </div>
         <h1 className="text-2xl text-center pr-4">
           Welcome,{" "}
           <button className="underline" onClick={handleProfileButton}>

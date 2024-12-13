@@ -13,7 +13,7 @@ export default function CreateUserModal() {
         name: nameInput.value,
         reward: rewardInput.value,
         passOffLevel: passOffSelect.value,
-        timeBank: 0,
+        timeBank: 30,
       };
       handleUserUpdate(newUser);
     }
