@@ -79,6 +79,9 @@ export default function useGameProgress(): {
       }
 
       const tableProgress = updatedTables[number];
+      if (!progress.passed) {
+        return updatedTables;
+      }
 
       if (progress.type) {
         // Update random mode
