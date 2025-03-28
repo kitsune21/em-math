@@ -17,6 +17,7 @@ export default function Game() {
   const [showTimerModal, setShowTimerModal] = useState(false);
   const [timeBanked, setTimeBanked] = useState(0);
   const [hasUsedBank, setHasUsedBank] = useState(false);
+  const [disableInput, setDisableInput] = useState(false);
   const { updateTimesTableProgress, getTimesTableProgress } = useGameProgress();
   const formRef = useRef(null);
   const { number, difficulty, type } = useParams();
@@ -46,6 +47,7 @@ export default function Game() {
           setGameTimer(gameTimer - 1);
           return;
         } else {
+          setDisableInput(true);
           setShowTimerModal(true);
           return;
         }
@@ -170,12 +172,15 @@ export default function Game() {
 
   function selectYes(numSeconds: number) {
     setGameTimer(numSeconds);
+    setDisableInput(false);
     setShowTimerModal(false);
     setHasUsedBank(true);
     if (!formRef.current) return;
     for (let i = 0; i < shuffledMathList.length; i++) {
       // @ts-expect-error need to fix types here
       if (!formRef.current[i].value > 0) {
+        // @ts-expect-error need to fix types here
+        formRef.current[i].disabled = false;
         // @ts-expect-error need to fix types here
         formRef.current[i].focus();
         return;
@@ -185,6 +190,7 @@ export default function Game() {
 
   function selectNo() {
     correctProblems(null);
+    setDisableInput(false);
     setShowTimerModal(false);
   }
 
@@ -274,8 +280,8 @@ export default function Game() {
                   number={number}
                   myNum={myNum}
                   index={index}
-                  gameFinished={gameFinished}
                   rightWrongList={rightWrongList}
+                  disabled={disableInput}
                 />
               ))}
             </div>
