@@ -31,6 +31,9 @@ export default function UserProvider({
   }
 
   function bankTime(numSeconds: number) {
+    if (numSeconds < 0) {
+      numSeconds = 0
+    }
     if (!user) return;
     const updatedUser: User = {
       name: user?.name,
